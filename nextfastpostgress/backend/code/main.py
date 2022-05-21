@@ -1,8 +1,8 @@
 from fastapi import FastAPI
-from typing import List  # ネストされたBodyを定義するために必要
-from starlette.middleware.cors import CORSMiddleware  # CORSを回避するために必要
-from db import session  # DBと接続するためのセッション
-from model import UserTable, User  # 今回使うモデルをインポート
+from typing import List
+from starlette.middleware.cors import CORSMiddleware
+from .db import session
+from .model import UserTable, User
 
 app = FastAPI()
 
@@ -16,6 +16,14 @@ app.add_middleware(
 )
 
 # ----------APIの定義------------
+@app.get("/")
+async def get_all_hedgehogs() -> List[dict]:
+    hedgehogs = [
+        {"id": 1, "name": "momo", "color": "SALT & PEPPER", "age": 2},
+        {"id": 2, "name": "coco", "color": "DARK GREY", "age": 1.5}
+    ]
+
+    return hedgehogs
 # テーブルにいる全ユーザ情報を取得 GET
 @app.get("/users")
 def read_users():

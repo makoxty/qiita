@@ -2,8 +2,8 @@
 # モデルの定義
 from sqlalchemy import Column, Integer, String
 from pydantic import BaseModel
-from db import Base
-from db import ENGINE
+from .db import Base
+from .db import ENGINE
 
 
 # userテーブルのモデルUserTableを定義

@@ -36,3 +36,8 @@
     - \d hedgehogs
     - table一覧
       - \dt
+
+pip3 install -r requirements.txtが失敗する場合、以下をインストールすると解決する
+brew install postgresql
+brew install libpq
+https://superuser-com.translate.goog/questions/296873/install-libpq-dev-on-mac-os?_x_tr_sl=en&_x_tr_tl=ja&_x_tr_hl=ja&_x_tr_pto=sc

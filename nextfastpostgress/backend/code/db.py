@@ -3,24 +3,31 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
+from databases import DatabaseURL
+from starlette.config import Config
+from starlette.datastructures import Secret
 
+config = Config(".env")
 
 # 接続したいDBの基本情報を設定
-user_name = "user"
-password = "password"
-host = "db"  # docker-composeで定義したMySQLのサービス名
-database_name = "sample_db"
+SECRET_KEY = config("SECRET_KEY", cast=Secret, default="CHANGEME")
+POSTGRES_USER = config("POSTGRES_USER", cast=str)
+POSTGRES_PASSWORD = config("POSTGRES_PASSWORD", cast=Secret)
+POSTGRES_SERVER = config("POSTGRES_SERVER", cast=str, default="db")
+POSTGRES_PORT = config("POSTGRES_PORT", cast=str, default="5432")
+POSTGRES_DB = config("POSTGRES_DB", cast=str)
 
-DATABASE = 'mysql://%s:%s@%s/%s?charset=utf8' % (
-    user_name,
-    password,
-    host,
-    database_name,
-)
+# 立ち上がるけどSwaggerが立ち上がらない
+DATABASE_URL = "postgresql://postgres:postgres@postgresserver/db"
+# DATABASE_URL = config(
+#     "DATABASE_URL",
+#     cast=DatabaseURL,
+#     default=f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
+# )
 
 # DBとの接続
 ENGINE = create_engine(
-    DATABASE,
+    DATABASE_URL,
     encoding="utf-8",
     echo=True
 )
